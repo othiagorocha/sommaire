@@ -1,3 +1,4 @@
+style(1h31): cria título altamente estilizado em HeroSection
 feat(1h24): implementa HeroSection
 feat(1h11): implementando NavLink
 feat(1h07): implementadno navegação
