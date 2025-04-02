@@ -1,3 +1,4 @@
+feat(2h05): implementa PricingSection
 feat(1h49): implementa HowItWorksSection
 feat(1h38): implementa DemoSection
 style(1h31): cria título altamente estilizado em HeroSection
