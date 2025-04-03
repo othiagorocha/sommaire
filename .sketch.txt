@@ -1,3 +1,4 @@
+feat(2h26): implementa autenticação usando Clerk
 feat(2h10): implementa CTASection
 feat(2h05): implementa PricingSection
 feat(1h49): implementa HowItWorksSection

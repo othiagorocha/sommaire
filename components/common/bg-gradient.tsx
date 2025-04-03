@@ -2,7 +2,8 @@ import { cn } from "@/lib/utils";
 
 export const BgGradient = ({ children, className }: { children?: React.ReactNode; className?: string }) => {
   return (
-    <div className={cn("relative isolate", className)}>
+    // <div className={cn("relative isolate", className)}>
+    <div className={cn("relative isolate")}>
       <div aria-hidden className='pointer-events-none absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-32'>
         <div
           style={{
