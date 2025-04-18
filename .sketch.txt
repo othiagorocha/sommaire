@@ -1,3 +1,4 @@
+feat(2h31): implementa UploadPage
 feat(2h26): implementa autenticação usando Clerk
 feat(2h10): implementa CTASection
 feat(2h05): implementa PricingSection
