@@ -1,3 +1,4 @@
+feat(3h54): implementa função generateSummaryFromGemini
 feat(2h54): implementa handleSubmit em UploadForm
 feat(2h31): implementa UploadPage
 feat(2h26): implementa autenticação usando Clerk
