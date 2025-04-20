@@ -24,7 +24,7 @@ export const UploadHeader = () => {
         </span>
       </div>
       <div className="mt-2 text-lg leading-8 text-gray-600 max-w-2xl text-center">
-        <p>Upload your PDF and let our AI do the magic!</p>
+        <p>Upload your PDF and let our AI do the magic! ✨ </p>
       </div>
     </div>
   );
