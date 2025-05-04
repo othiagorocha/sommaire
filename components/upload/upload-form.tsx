@@ -5,6 +5,7 @@ import { UploadFormInput } from "./upload-form-input";
 import { useUploadThing } from "@/utils/uploadthing";
 import { toast } from "sonner";
 import { generatePdfSummary, storePdfSummaryAction, UploadResponse } from "@/actions/upload-actions";
+import { useRouter } from "next/navigation";
 
 const schema = z.object({
   file: z
@@ -15,6 +16,8 @@ const schema = z.object({
 
 export const UploadForm = () => {
   const formRef = React.useRef<HTMLFormElement>(null);
+  const router = useRouter();
+
   const { startUpload, isUploading, routeConfig } = useUploadThing("pdfUploader", {
     onClientUploadComplete: () => {
       toast.success("Uploaded successfully!");
@@ -76,6 +79,7 @@ export const UploadForm = () => {
       toast.success("✨ Summary generated successfully! ✨");
 
       formRef.current?.reset();
+      router.push(`/summary/${storeResult.data?.id}`);
     }
   };
 

@@ -5,6 +5,7 @@ import { fetchAndExtractPdfText } from "@/lib/langchain";
 import { auth } from "@clerk/nextjs/server";
 import { getDbConnection } from "./db";
 import { formatFileNameAsTitle } from "@/utils/format-utils";
+import { revalidatePath } from "next/cache";
 
 interface PdfSummaryType {
   userId: string;
@@ -73,11 +74,16 @@ export async function generatePdfSummary(uploadResponse: UploadResponse) {
   }
 }
 
+type SavedPdfSummary = {
+  id: string;
+  summary_text: string;
+};
+
 async function savePdfSummary({ userId, fileUrl, summary, title, fileName }: PdfSummaryType) {
   // save the summary to the database
   try {
     const sql = await getDbConnection();
-    const [savedSummary] = await sql`INSERT INTO pdf_summaries (
+    const [savedSummary] = (await sql`INSERT INTO pdf_summaries (
           user_id,
           original_file_url,
           summary_text,
@@ -89,7 +95,7 @@ async function savePdfSummary({ userId, fileUrl, summary, title, fileName }: Pdf
           ${summary},
           ${title},
           ${fileName}
-      )RETURNING id, summary_text`;
+      )RETURNING id, summary_text`) as [SavedPdfSummary];
 
     return savedSummary;
   } catch (error) {
@@ -99,7 +105,7 @@ async function savePdfSummary({ userId, fileUrl, summary, title, fileName }: Pdf
 }
 
 export async function storePdfSummaryAction({ userId, fileUrl, summary, title, fileName }: PdfSummaryType) {
-  let savedPdfSummary: any;
+  let savedPdfSummary: SavedPdfSummary | null = null;
   try {
     const { userId } = await auth();
     if (!userId) {
@@ -116,14 +122,20 @@ export async function storePdfSummaryAction({ userId, fileUrl, summary, title, f
         message: "Error saving PDF summary, please try again...",
       };
     }
-    return {
-      success: true,
-      message: "PDF summary saved successfully",
-    };
   } catch (error) {
     return {
       success: false,
       message: error instanceof Error ? error.message : "Error saving PDF summary",
     };
   }
+
+  revalidatePath(`/summaries/${savedPdfSummary.id}`);
+
+  return {
+    success: true,
+    message: "PDF summary saved successfully",
+    data: {
+      id: savedPdfSummary.id,
+    },
+  };
 }
