@@ -4,6 +4,7 @@ import { generateSummaryFromGemini } from "@/lib/geminiai";
 import { fetchAndExtractPdfText } from "@/lib/langchain";
 import { auth } from "@clerk/nextjs/server";
 import { getDbConnection } from "./db";
+import { formatFileNameAsTitle } from "@/utils/format-utils";
 
 interface PdfSummaryType {
   userId: string;
@@ -53,10 +54,13 @@ export async function generatePdfSummary(uploadResponse: UploadResponse) {
     const pdfText = await fetchAndExtractPdfText(pdfUrl);
 
     const summary = await generateSummaryFromGemini(pdfText);
+
+    const formattedFileName = formatFileNameAsTitle(fileName);
     return {
       success: true,
       message: "File uploaded successfully",
       data: {
+        title: formattedFileName,
         summary,
       },
     };

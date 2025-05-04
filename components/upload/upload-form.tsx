@@ -1,9 +1,10 @@
 "use client";
+import React from "react";
 import { z } from "zod";
 import { UploadFormInput } from "./upload-form-input";
 import { useUploadThing } from "@/utils/uploadthing";
 import { toast } from "sonner";
-import { generatePdfSummary, UploadResponse } from "@/actions/upload-actions";
+import { generatePdfSummary, storePdfSummaryAction, UploadResponse } from "@/actions/upload-actions";
 
 const schema = z.object({
   file: z
@@ -13,6 +14,7 @@ const schema = z.object({
 });
 
 export const UploadForm = () => {
+  const formRef = React.useRef<HTMLFormElement>(null);
   const { startUpload, isUploading, routeConfig } = useUploadThing("pdfUploader", {
     onClientUploadComplete: () => {
       toast.success("Uploaded successfully!");
@@ -59,11 +61,22 @@ export const UploadForm = () => {
         },
       },
     }));
-    const summary = await generatePdfSummary(transformedResp as UploadResponse);
-    console.log(summary);
-    // summarize the pdf using AI
-    // save the summary to the database
-    // redirect to the [id] summary page
+    const { data, message, success } = await generatePdfSummary(transformedResp as UploadResponse);
+    console.log(data);
+
+    if (data?.summary) {
+      const storeResult = await storePdfSummaryAction({
+        userId: resp[0].serverData.userId,
+        fileUrl: resp[0].ufsUrl,
+        summary: data.summary,
+        title: data.title,
+        fileName: file.name,
+      });
+
+      toast.success("✨ Summary generated successfully! ✨");
+
+      formRef.current?.reset();
+    }
   };
 
   return (
