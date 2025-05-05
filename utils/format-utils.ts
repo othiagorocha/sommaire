@@ -1,11 +1,11 @@
 export function formatFileNameAsTitle(fileName: string): string {
-  // Remove file extension and replace special characters with spaces
-  const withoutExtension = fileName.replace(/\. [^\.]+$/, "");
-  const withSpaces = withoutExtension
-    .replace(/[-_]+/g, " ") // Replace dashes and underscores with spaces
-    .replace(/([a-z])([A-Z])/g, "$1 $2"); // Add space between camelCase
+  // Remove a extensão (ex: .pdf, .docx, etc.)
+  const withoutExtension = fileName.replace(/\.[^\.]+$/, "");
 
-  // Convert to title case (capitalize first letter of each word)
+  // Substitui hífens e underlines por espaço, e adiciona espaço entre camelCase
+  const withSpaces = withoutExtension.replace(/[-_]+/g, " ").replace(/([a-z])([A-Z])/g, "$1 $2");
+
+  // Capitaliza cada palavra
   return withSpaces
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())

@@ -20,8 +20,8 @@ export const UploadForm = () => {
 
   const { startUpload, isUploading, routeConfig } = useUploadThing("pdfUploader", {
     onClientUploadComplete: () => {
-      toast.success("Uploaded successfully!");
-      toast.dismiss("uploading");
+      // toast.success("Uploaded successfully!");
+      // toast.dismiss("uploading");
     },
     onUploadProgress: () => {
       toast.loading("Uploading...", { id: "uploading" });
@@ -76,7 +76,7 @@ export const UploadForm = () => {
         fileName: file.name,
       });
 
-      toast.success("✨ Summary generated successfully! ✨");
+      toast.success("✨ Summary generated successfully! ✨", { id: "uploading" });
 
       formRef.current?.reset();
       router.push(`/summary/${storeResult.data?.id}`);

@@ -57,6 +57,7 @@ export async function generatePdfSummary(uploadResponse: UploadResponse) {
     const summary = await generateSummaryFromGemini(pdfText);
 
     const formattedFileName = formatFileNameAsTitle(fileName);
+
     return {
       success: true,
       message: "File uploaded successfully",
