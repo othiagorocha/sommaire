@@ -79,7 +79,7 @@ export const UploadForm = () => {
       toast.success("✨ Summary generated successfully! ✨", { id: "uploading" });
 
       formRef.current?.reset();
-      router.push(`/summary/${storeResult.data?.id}`);
+      router.push(`/summaries/${storeResult.data?.id}`);
     }
   };
 
